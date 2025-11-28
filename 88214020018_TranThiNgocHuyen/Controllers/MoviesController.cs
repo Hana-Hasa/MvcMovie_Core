@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -57,15 +58,30 @@ namespace _88214020018_TranThiNgocHuyen.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,GenreName,ReleaseDate,Price,Rating,GenreId")] Movie movie)
+        public async Task<IActionResult> Create(Movie movie)
         {
             if (ModelState.IsValid)
             {
+                if (movie.PictureUpload != null)
+                {
+                    string path = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"), Path.GetFileName(movie.PictureUpload.FileName));
+                    using (var stream = System.IO.File.Create(path))
+                    {
+                        movie.PictureUpload.CopyTo(stream);
+                    }
+                    string pathInDb = "/images/" + Path.GetFileName(movie.PictureUpload.FileName);
+                    movie.PicturePath = pathInDb;
+                }
+                else
+                {
+                    //Kiem bat ky hinh No Image tren internet
+                    movie.PicturePath = "/images/no-image.jpg";
+                }
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "ID", "Name", movie.GenreId);
+            ViewData["GenreID"] = new SelectList(_context.Genres, "ID", "Name", movie.GenreID);
             return View(movie);
         }
 
@@ -91,7 +107,7 @@ namespace _88214020018_TranThiNgocHuyen.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,GenreName,ReleaseDate,Price,Rating,GenreId")] Movie movie)
+        public async Task<IActionResult> Edit(int id, Movie movie)
         {
             if (id != movie.Id)
             {
@@ -102,6 +118,21 @@ namespace _88214020018_TranThiNgocHuyen.Controllers
             {
                 try
                 {
+                    if (movie.PictureUpload != null)
+                    {
+                        string path = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"), Path.GetFileName(movie.PictureUpload.FileName));
+                        using (var stream = System.IO.File.Create(path))
+                        {
+                            movie.PictureUpload.CopyTo(stream);
+                        }
+                        string pathInDb = "/images/" + Path.GetFileName(movie.PictureUpload.FileName);
+                        movie.PicturePath = pathInDb;
+                    }
+                    else
+                    {
+                        //Kiem bat ky hinh No Image tren internet
+                        movie.PicturePath = "/images/no-image.jpg";
+                    }
                     _context.Update(movie);
                     await _context.SaveChangesAsync();
                 }
@@ -118,7 +149,6 @@ namespace _88214020018_TranThiNgocHuyen.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "ID", "Name", movie.GenreId);
             return View(movie);
         }
 
