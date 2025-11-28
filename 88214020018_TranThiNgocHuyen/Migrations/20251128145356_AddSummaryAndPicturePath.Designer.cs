@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _88214020018_TranThiNgocHuyen.Data;
 
@@ -11,9 +12,11 @@ using _88214020018_TranThiNgocHuyen.Data;
 namespace _88214020018_TranThiNgocHuyen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251128145356_AddSummaryAndPicturePath")]
+    partial class AddSummaryAndPicturePath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,8 +262,7 @@ namespace _88214020018_TranThiNgocHuyen.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PicturePath")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -272,8 +274,8 @@ namespace _88214020018_TranThiNgocHuyen.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Summary")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Title")
                         .IsRequired()

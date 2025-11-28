@@ -47,43 +47,49 @@ namespace _88214020018_TranThiNgocHuyen.Controllers
         }
 
         // GET: Movies/Create
-        public IActionResult Create()
+public IActionResult Create()
+{
+    ViewData["GenreId"] = new SelectList(_context.Genres, "ID", "Name");
+    return View();
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create(Movie movie)
+{
+    if (ModelState.IsValid)
+    {
+        if (movie.PictureUpload != null)
         {
-            ViewData["GenreId"] = new SelectList(_context.Genres, "ID", "Name");
-            return View();
+            string imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+            if (!Directory.Exists(imagesFolder))
+            {
+                Directory.CreateDirectory(imagesFolder);
+            }
+
+            string fileName = Path.GetFileName(movie.PictureUpload.FileName);
+            string path = Path.Combine(imagesFolder, fileName);
+
+            using (var stream = System.IO.File.Create(path))
+            {
+                await movie.PictureUpload.CopyToAsync(stream);
+            }
+
+            movie.PicturePath = "/images/" + fileName;
+        }
+        else
+        {
+            movie.PicturePath = "/images/no-image.jpg";
         }
 
-        // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Movie movie)
-        {
-            if (ModelState.IsValid)
-            {
-                if (movie.PictureUpload != null)
-                {
-                    string path = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"), Path.GetFileName(movie.PictureUpload.FileName));
-                    using (var stream = System.IO.File.Create(path))
-                    {
-                        movie.PictureUpload.CopyTo(stream);
-                    }
-                    string pathInDb = "/images/" + Path.GetFileName(movie.PictureUpload.FileName);
-                    movie.PicturePath = pathInDb;
-                }
-                else
-                {
-                    //Kiem bat ky hinh No Image tren internet
-                    movie.PicturePath = "/images/no-image.jpg";
-                }
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["GenreID"] = new SelectList(_context.Genres, "ID", "Name", movie.GenreID);
-            return View(movie);
-        }
+        _context.Add(movie);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    ViewData["GenreId"] = new SelectList(_context.Genres, "ID", "Name", movie.GenreId);
+    return View(movie);
+}
 
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)

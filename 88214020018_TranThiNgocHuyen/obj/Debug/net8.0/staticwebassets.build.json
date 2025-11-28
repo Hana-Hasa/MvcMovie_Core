@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pCppRXq9dS2IFgkZ4kHs88TV2XxdjwxF5vubf13wcWg=",
+  "Hash": "IhvW/3qqHizBHvIJvvozLokIZ0U0fZmK8Y3GgPUw/9o=",
   "Source": "88214020018_TranThiNgocHuyen",
   "BasePath": "_content/88214020018_TranThiNgocHuyen",
   "Mode": "Default",
@@ -1231,6 +1231,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/Users/nguyendat/Working/hana/MvcMovie_Core/88214020018_TranThiNgocHuyen/wwwroot/images/endgame.jpg",
+      "SourceId": "88214020018_TranThiNgocHuyen",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/nguyendat/Working/hana/MvcMovie_Core/88214020018_TranThiNgocHuyen/wwwroot/",
+      "BasePath": "_content/88214020018_TranThiNgocHuyen",
+      "RelativePath": "images/endgame.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/endgame.jpg"
     },
     {
       "Identity": "/Users/nguyendat/Working/hana/MvcMovie_Core/88214020018_TranThiNgocHuyen/wwwroot/images/no-image.jpg",

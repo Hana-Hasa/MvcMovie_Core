@@ -16,14 +16,8 @@ namespace _88214020018_TranThiNgocHuyen.Models
         public string Title { get; set; } = string.Empty;
 
         [Display(Name = "Tóm tắt")]
-        [StringLength(1000)]
+        [StringLength(500)]
         public string? Summary { get; set; }
-
-        // Thể loại text (dùng để hiển thị)
-        [Display(Name = "Thể loại")]
-        [StringLength(50)]
-        [Genre]
-        public string GenreName { get; set; } = string.Empty;
 
         [Display(Name = "Ngày phát hành")]
         [DataType(DataType.Date)]
@@ -35,44 +29,30 @@ namespace _88214020018_TranThiNgocHuyen.Models
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
-        [Display(Name = "Đánh giá")]
-        [Range(0, 10)]
-        public double Rating { get; set; }
+[Display(Name = "Đánh giá")]
+[Range(0, 10)]
+public double Rating { get; set; }
 
-        // Khóa ngoại Genre
+        [Display(Name = "Thể loại")]
+        [StringLength(50)]
+        public string GenreName { get; set; } = string.Empty;
+
+        [ForeignKey("Genre")]
         [Display(Name = "Mã thể loại")]
         public int? GenreId { get; set; }
 
         public Genre? Genre { get; set; }
 
-        // ✅ Alias cho các View/Controller đang dùng GenreID
-        [NotMapped]
-        public int? GenreID
-        {
-            get => GenreId;
-            set => GenreId = value;
-        }
-
-        // ✅ Alias cho các View/Controller đang dùng Rated
-        [NotMapped]
-        public double Rated
-        {
-            get => Rating;
-            set => Rating = value;
-        }
-
-        // ✅ Chỗ lưu đường dẫn file hình trong DB
-        [Display(Name = "Đường dẫn ảnh")]
+        [Display(Name = "Ảnh")]
+        [StringLength(255)]
         public string? PicturePath { get; set; }
 
-        // ✅ Dùng để upload file từ form (không lưu trong DB)
         [NotMapped]
-        [Display(Name = "Ảnh")]
+        [Display(Name = "Chọn ảnh")]
         public IFormFile? PictureUpload { get; set; }
 
         [NotMapped]
         [Display(Name = "Thông tin đầy đủ")]
-        public string FullInfo =>
-            $"{Title} ({ReleaseDate:yyyy}) - {GenreName}";
+        public string FullInfo => $"{Title} ({ReleaseDate:yyyy}) - {GenreName}";
     }
 }
