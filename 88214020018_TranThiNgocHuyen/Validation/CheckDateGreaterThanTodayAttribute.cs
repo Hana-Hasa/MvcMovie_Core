@@ -1,12 +1,23 @@
-public class CheckDateGreaterThanTodayAttribute: ValidationAttribute
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace _88214020018_TranThiNgocHuyen.Validation
 {
-protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-{
-DateTime dt = (DateTime)value;
-if (dt >= DateTime.UtcNow)
-{
-return ValidationResult.Success;
-}
-return new ValidationResult(ErrorMessage ?? "Dữ liệu ngày phải lớn hơn ngày hôm nay");
-}
+    public class CheckDateGreaterThanTodayAttribute : ValidationAttribute
+    {
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value is DateTime dateValue)
+            {
+                if (dateValue <= DateTime.Today)
+                {
+                    return new ValidationResult(
+                        ErrorMessage ?? "Ngày phải lớn hơn ngày hôm nay."
+                    );
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
 }

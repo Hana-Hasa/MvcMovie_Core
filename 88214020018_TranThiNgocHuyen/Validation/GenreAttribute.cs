@@ -1,15 +1,24 @@
-public class GenreAttribute : ValidationAttribute
+using System.ComponentModel.DataAnnotations;
+
+namespace _88214020018_TranThiNgocHuyen.Validation
 {
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-{
-int genreID = int.Parse(value.ToString());
-var _context = (ApplicationDbContext)validationContext
-.GetService(typeof(ApplicationDbContext));
-if (_context.Genres.Any(x => x.ID == genreID))
-{
-return ValidationResult.Success;
-}
-return new ValidationResult(
-ErrorMessage ?? "Genre khong ton tai");
-}
+    public class GenreAttribute : ValidationAttribute
+    {
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
+            {
+                return new ValidationResult(ErrorMessage ?? "Thể loại không được để trống.");
+            }
+
+            // Ví dụ: không cho nhập toàn số
+            var str = value.ToString()!;
+            if (int.TryParse(str, out _))
+            {
+                return new ValidationResult(ErrorMessage ?? "Thể loại không được chỉ toàn số.");
+            }
+
+            return ValidationResult.Success;
+        }
+    }
 }
